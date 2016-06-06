@@ -24,10 +24,13 @@ public class Global : MonoBehaviour {
 
     private Vector3 FindCenter()
     {
+        centerOfMass = Vector3.zero;
+
         foreach (GameObject boidObject in boidObjects)
         {
             centerOfMass += boidObject.transform.position;
         }
+
         centerOfMass /= boidObjects.Count;
 
         return centerOfMass;
