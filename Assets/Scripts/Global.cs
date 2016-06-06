@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Global : MonoBehaviour {
 
@@ -9,11 +10,7 @@ public class Global : MonoBehaviour {
 
     private void Start()
     {
-        GameObject[] boidObjectsArray = GameObject.FindGameObjectsWithTag("BoidObject");
-        for (int i = 0; i < boidObjectsArray.Length; i++)
-        {
-            boidObjects.Add(boidObjectsArray[i]);
-        }
+        boidObjects = GameObject.FindGameObjectsWithTag("BoidObject").ToList();
     }
 
 	private void Update ()
