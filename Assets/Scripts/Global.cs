@@ -17,8 +17,8 @@ public class Global : MonoBehaviour {
 
 	private void Update ()
     {
-        //if (boidObjects != null)
-        //    centerOfMass = FindCenter();
+        if (boidObjects != null)
+            centerOfMass = FindCenter();
 	}
 
     private Vector3 FindCenter()

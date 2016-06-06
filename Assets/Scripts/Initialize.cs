@@ -5,14 +5,16 @@ public class Initialize : MonoBehaviour {
 
     public GameObject prefab;
     public int numberOfObjects;
-    public float ObjectDistance;
+    public float objectDistance;
+    public float repulsion;
 
     private GameObject parent;
 
 	private void Awake ()
     {
+        Application.runInBackground = true;
         parent = new GameObject("BoidObjects");
-        //Camera.main.transform.parent = parent;
+        //Camera.main.transform.parent = parent.transform;
         SpawnObjects();
 	}
 
@@ -24,7 +26,8 @@ public class Initialize : MonoBehaviour {
             GameObject newObject = Instantiate(prefab, spawnLocation, Quaternion.identity) as GameObject;
             newObject.name = "BoidObject " + i;
             newObject.transform.parent = parent.transform;
-            newObject.GetComponent<BoidBehaviour>().ObjectDistance = ObjectDistance;
+            newObject.GetComponent<SphereCollider>().radius = objectDistance;
+            newObject.GetComponent<BoidBehaviour>().repulsion = repulsion;
         }
     }
 }

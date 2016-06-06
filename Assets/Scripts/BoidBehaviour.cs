@@ -11,7 +11,7 @@ public class BoidBehaviour : MonoBehaviour {
     private Global stats;
     private List<Transform> closeObjects = new List<Transform>();
 
-    public float ObjectDistance;
+    public float repulsion;
 
 	private void Start ()
     {
@@ -28,6 +28,7 @@ public class BoidBehaviour : MonoBehaviour {
         //Boids rules
         GravitateTowardsCenter(); // Rule 1
         KeepDistance(); // Rule 2
+        MatchVelocity(); // Rule 3
 
         MoveObject();
 	}
@@ -48,10 +49,27 @@ public class BoidBehaviour : MonoBehaviour {
 
         foreach(Transform otherTransform in closeObjects)
         {
-            c -= (otherTransform.position - this.transform.position) * 10;
+            c -= (otherTransform.position - this.transform.position) * repulsion;
         }
 
         velocity += c;
+    }
+
+    private void MatchVelocity()
+    {
+        Vector3 pv = Vector3.zero; // Perceived velocity
+
+        foreach(GameObject otherObject in stats.GetAllObjects())
+        {
+            if(otherObject != this.gameObject)
+            {
+                pv += otherObject.GetComponent<Rigidbody>().velocity / 8;
+            }
+
+            pv /= stats.GetAllObjects().Count - 1;
+        }
+
+        velocity += pv;
     }
 
     private void MoveObject()
