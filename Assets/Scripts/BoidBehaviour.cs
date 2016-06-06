@@ -63,7 +63,7 @@ public class BoidBehaviour : MonoBehaviour {
         {
             if(otherObject != this.gameObject)
             {
-                pv += otherObject.GetComponent<Rigidbody>().velocity / 8;
+                pv += otherObject.GetComponent<Rigidbody>().velocity * 4;
             }
 
             pv /= stats.GetAllObjects().Count - 1;
