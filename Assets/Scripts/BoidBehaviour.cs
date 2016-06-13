@@ -8,17 +8,22 @@ public class BoidBehaviour : MonoBehaviour {
     private Material material;
     private Vector3 velocity;
     private Vector3 perceivedCenterOfMass;
+    private Vector3 perceivedFlockCenter;
     private Global stats;
+    private Vector3 currentVelocity;
     private List<Transform> closeObjects = new List<Transform>();
-
-    public float repulsion;
+    private List<Transform> flockObjects = new List<Transform>();
+    private float maxSpeed;
+    private float repulsion;
 
 	private void Start ()
     {
         stats = GameObject.Find("Scripts").GetComponent<Global>();
         material = GetComponent<MeshRenderer>().material;
         material.color = Color.cyan;
-	}
+        maxSpeed = GameObject.Find("Scripts").GetComponent<Initialize>().maxSpeed;
+        repulsion = GameObject.Find("Scripts").GetComponent<Initialize>().repulsion;
+    }
 	
 	private void FixedUpdate ()
     {
@@ -30,6 +35,8 @@ public class BoidBehaviour : MonoBehaviour {
         KeepDistance(); // Rule 2
         MatchVelocity(); // Rule 3
 
+        ClampVelocity();
+
         MoveObject();
 	}
 
@@ -40,7 +47,9 @@ public class BoidBehaviour : MonoBehaviour {
 
     private void GravitateTowardsCenter()
     {
-        velocity += perceivedCenterOfMass - transform.position;
+        //velocity += -transform.position / 4;
+        velocity += (perceivedCenterOfMass - transform.position) / 10;
+        velocity += perceivedFlockCenter - transform.position;
     }
 
     private void KeepDistance()
@@ -63,7 +72,7 @@ public class BoidBehaviour : MonoBehaviour {
         {
             if(otherObject != this.gameObject)
             {
-                pv += otherObject.GetComponent<Rigidbody>().velocity * 4;
+                pv += otherObject.GetComponent<Rigidbody>().velocity * 8;
             }
 
             pv /= stats.GetAllObjects().Count - 1;
@@ -74,7 +83,8 @@ public class BoidBehaviour : MonoBehaviour {
 
     private void MoveObject()
     {
-        GetComponent<Rigidbody>().AddForce(velocity);
+        if(velocity.magnitude < 1000)
+            GetComponent<Rigidbody>().AddForce(velocity);
     }
 
     private void FindCenter()
@@ -88,6 +98,26 @@ public class BoidBehaviour : MonoBehaviour {
         }
 
         perceivedCenterOfMass /= stats.GetAllObjects().Count - 1;
+
+        perceivedFlockCenter = Vector3.zero;
+
+        foreach (Transform boidObject in flockObjects)
+        {
+            if (boidObject != this.gameObject) //Find center of all boid objects that aren't this object
+                perceivedFlockCenter += boidObject.transform.position;
+        }
+
+        perceivedFlockCenter /= flockObjects.Count - 1;
+    }
+
+    private void ClampVelocity()
+    {
+        gameObject.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude(gameObject.GetComponent<Rigidbody>().velocity, maxSpeed);
+    }
+
+    public void SetFlock(List<Transform> input)
+    {
+        flockObjects = input;
     }
 
     private void OnTriggerEnter(Collider other)

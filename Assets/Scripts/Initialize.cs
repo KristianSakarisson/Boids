@@ -7,11 +7,13 @@ public class Initialize : MonoBehaviour {
     public int numberOfObjects;
     public float objectDistance;
     public float repulsion;
+    public float maxSpeed;
 
     private GameObject parent;
 
 	private void Awake ()
     {
+        //Time.timeScale = 10;
         Application.runInBackground = true;
         parent = new GameObject("BoidObjects");
         //Camera.main.transform.parent = parent.transform;
@@ -27,7 +29,12 @@ public class Initialize : MonoBehaviour {
             newObject.name = "BoidObject " + i;
             newObject.transform.parent = parent.transform;
             newObject.GetComponent<SphereCollider>().radius = objectDistance;
-            newObject.GetComponent<BoidBehaviour>().repulsion = repulsion;
+            //newObject.GetComponent<BoidBehaviour>().repulsion = repulsion;
+
+            GameObject followSphere = new GameObject("FollowSphere " + i);
+            followSphere.AddComponent<SphereCollider>().radius = 5f;
+            followSphere.GetComponent<SphereCollider>().isTrigger = true;
+            followSphere.AddComponent<SphereFollow>().toFollow = newObject;
         }
     }
 }

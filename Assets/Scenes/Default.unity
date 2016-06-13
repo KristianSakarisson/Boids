@@ -228,15 +228,19 @@ Prefab:
       objectReference: {fileID: 185306, guid: 4ed051b3f0225c24ab2fbd805316ad32, type: 2}
     - target: {fileID: 11463216, guid: 1ccc18cd2b622cc4aa6deae5a5edb1c5, type: 2}
       propertyPath: numberOfObjects
-      value: 130
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 11463216, guid: 1ccc18cd2b622cc4aa6deae5a5edb1c5, type: 2}
       propertyPath: objectDistance
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11463216, guid: 1ccc18cd2b622cc4aa6deae5a5edb1c5, type: 2}
       propertyPath: repulsion
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11463216, guid: 1ccc18cd2b622cc4aa6deae5a5edb1c5, type: 2}
+      propertyPath: maxSpeed
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ccc18cd2b622cc4aa6deae5a5edb1c5, type: 2}
